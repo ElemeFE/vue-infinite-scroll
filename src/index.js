@@ -1,4 +1,4 @@
-//var Vue = require('vue');
+var Vue = require('vue');
 
 var throttle = function(fn, delay) {
   var now, lastExec, timer, context, args;
@@ -64,6 +64,20 @@ var getVisibleHeight = function(element) {
   return element.clientHeight;
 };
 
+var isAttached = function(element) {
+  var currentNode = element.parentNode;
+  while (currentNode) {
+    if (currentNode.tagName === 'HTML') {
+      return true;
+    }
+    if (currentNode.nodeType === 11) {
+      return false;
+    }
+    currentNode = currentNode.parentNode;
+  }
+  return false;
+};
+
 Vue.directive('infiniteScroll', {
   doBind: function() {
     var element = this.el;
@@ -112,10 +126,25 @@ Vue.directive('infiniteScroll', {
 
   bind: function() {
     var directive = this;
+    var element = this.el;
 
     directive.vm.$on('hook:ready', function() {
-      directive.doBind();
+      if (isAttached(element)) {
+        directive.doBind();
+      }
     });
+
+    this.bindTryCount = 0;
+
+    directive.timer = setTimeout(function() {
+      if (directive.bindTryCount > 10) return;
+      directive.bindTryCount++;
+      if (isAttached(element)) {
+        directive.doBind();
+      } else {
+        directive.timer = setTimeout(arguments.callee, 50);
+      }
+    }, 50);
   },
 
   unbind() {
