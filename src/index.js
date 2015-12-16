@@ -42,12 +42,26 @@ var getScrollTop = function(element) {
   return element.scrollTop;
 };
 
-var getScrollLeft = function(element) {
+var getComputedStyle = document.defaultView.getComputedStyle;
+
+var getScrollEventTarget = function (element) {
+  var currentNode = element.parentNode;
+  while (currentNode && currentNode.tagName !== 'HTML') {
+    var overflowY = getComputedStyle(currentNode)['overflowY'];
+    if (overflowY === 'scroll' || overflowY === 'auto') {
+      return currentNode;
+    }
+    currentNode = currentNode.parentNode;
+  }
+  return null;
+};
+
+var getVisibleHeight = function(element) {
   if (element === window) {
-    return Math.max(window.pageXOffset || 0, document.documentElement.scrollLeft);
+    return document.documentElement.clientHeight;
   }
 
-  return element.scrollLeft;
+  return element.clientHeight;
 };
 
 Vue.directive('infiniteScroll', {
@@ -75,14 +89,16 @@ Vue.directive('infiniteScroll', {
     var directive = this;
     var executeExpr = directive.expression;
 
+    var scrollEventTarget = this.scrollEventTarget = getScrollEventTarget(element) || window;
+
     this.scrollListener = throttle(function() {
       if (disabled) return;
 
-      var windowScrollTop = getScrollTop(window);
+      var viewportScrollTop = getScrollTop(scrollEventTarget);
       var elementRect = element.getBoundingClientRect();
 
-      var viewportBottom = windowScrollTop + document.documentElement.clientHeight;
-      var elementBottom = elementRect.bottom + windowScrollTop;
+      var viewportBottom = viewportScrollTop + getVisibleHeight(scrollEventTarget);
+      var elementBottom = elementRect.bottom + viewportScrollTop;
 
       if (viewportBottom + distance > elementBottom) {
         if (executeExpr) {
@@ -91,10 +107,10 @@ Vue.directive('infiniteScroll', {
       }
     }, 200);
 
-    window.addEventListener('scroll', this.scrollListener);
+    scrollEventTarget.addEventListener('scroll', this.scrollListener);
   },
 
   unbind() {
-    window.removeEventListener('scroll', this.scrollListener);
+    this.scrollEventTarget.removeEventListener('scroll', this.scrollListener);
   }
 });
