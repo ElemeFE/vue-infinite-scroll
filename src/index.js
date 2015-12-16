@@ -1,4 +1,4 @@
-var Vue = require('vue');
+//var Vue = require('vue');
 
 var throttle = function(fn, delay) {
   var now, lastExec, timer, context, args;
@@ -46,7 +46,7 @@ var getComputedStyle = document.defaultView.getComputedStyle;
 
 var getScrollEventTarget = function (element) {
   var currentNode = element.parentNode;
-  while (currentNode && currentNode.tagName !== 'HTML') {
+  while (currentNode && currentNode.tagName !== 'HTML' && currentNode.nodeType === 1) {
     var overflowY = getComputedStyle(currentNode)['overflowY'];
     if (overflowY === 'scroll' || overflowY === 'auto') {
       return currentNode;
@@ -65,7 +65,7 @@ var getVisibleHeight = function(element) {
 };
 
 Vue.directive('infiniteScroll', {
-  bind: function() {
+  doBind: function() {
     var element = this.el;
 
     var disabledExpr = element.getAttribute('infinite-scroll-disabled');
@@ -108,6 +108,14 @@ Vue.directive('infiniteScroll', {
     }, 200);
 
     scrollEventTarget.addEventListener('scroll', this.scrollListener);
+  },
+
+  bind: function() {
+    var directive = this;
+
+    directive.vm.$on('hook:ready', function() {
+      directive.doBind();
+    });
   },
 
   unbind() {
