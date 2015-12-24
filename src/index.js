@@ -45,7 +45,7 @@ var getScrollTop = function(element) {
 var getComputedStyle = document.defaultView.getComputedStyle;
 
 var getScrollEventTarget = function (element) {
-  var currentNode = element.parentNode;
+  var currentNode = element;
   while (currentNode && currentNode.tagName !== 'HTML' && currentNode.nodeType === 1) {
     var overflowY = getComputedStyle(currentNode)['overflowY'];
     if (overflowY === 'scroll' || overflowY === 'auto') {
@@ -62,6 +62,10 @@ var getVisibleHeight = function(element) {
   }
 
   return element.clientHeight;
+};
+
+var getElementTop = function(element) {
+  return element.getBoundingClientRect().top + getScrollTop(window);
 };
 
 var isAttached = function(element) {
@@ -92,11 +96,11 @@ Vue.directive('infiniteScroll', {
     }
 
     var distanceExpr = element.getAttribute('infinite-scroll-distance');
-    var distance = 0;
+    var distance = 1;
     if (distanceExpr) {
       distance = Number(this.vm.$get(distanceExpr));
       if (isNaN(distance)) {
-        distance = 0;
+        distance = 1;
       }
     }
 
@@ -107,17 +111,22 @@ Vue.directive('infiniteScroll', {
 
     this.scrollListener = throttle(function() {
       if (disabled) return;
-
       var viewportScrollTop = getScrollTop(scrollEventTarget);
-      var elementRect = element.getBoundingClientRect();
-
       var viewportBottom = viewportScrollTop + getVisibleHeight(scrollEventTarget);
-      var elementBottom = elementRect.bottom + viewportScrollTop;
 
-      if (viewportBottom + distance > elementBottom) {
-        if (executeExpr) {
-          directive.vm.$get(executeExpr);
-        }
+      var shouldTrigger = false;
+
+      if (scrollEventTarget !== element) {
+        var elementRect = element.getBoundingClientRect();
+        var elementBottom = getElementTop(element) - getElementTop(scrollEventTarget) + elementRect.bottom + viewportScrollTop;
+
+        shouldTrigger = viewportBottom + distance > elementBottom;
+      } else {
+        shouldTrigger = scrollEventTarget.scrollHeight - viewportBottom < distance;
+      }
+
+      if (shouldTrigger && executeExpr) {
+        directive.vm.$get(executeExpr);
       }
     }, 200);
 
