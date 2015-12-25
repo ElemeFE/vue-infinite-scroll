@@ -84,53 +84,79 @@ var isAttached = function(element) {
 
 Vue.directive('infiniteScroll', {
   doBind: function() {
-    var element = this.el;
+    if (this.binded) return;
+    this.binded = true;
+
+    var directive = this;
+    var element = directive.el;
+
+    directive.scrollEventTarget = getScrollEventTarget(element) || window;
+    directive.scrollListener = throttle(directive.doCheck.bind(directive), 200);
+    directive.scrollEventTarget.addEventListener('scroll', directive.scrollListener);
 
     var disabledExpr = element.getAttribute('infinite-scroll-disabled');
     var disabled = false;
+
     if (disabledExpr) {
       this.vm.$watch(disabledExpr, function(value) {
-        disabled = value;
+        directive.disabled = value;
       });
-      disabled = !!this.vm.$get(disabledExpr);
+      disabled = !!directive.vm.$get(disabledExpr);
     }
+    directive.disabled = disabled;
 
     var distanceExpr = element.getAttribute('infinite-scroll-distance');
-    var distance = 1;
+    var distance = 0;
     if (distanceExpr) {
-      distance = Number(this.vm.$get(distanceExpr));
+      distance = Number(directive.vm.$get(distanceExpr));
       if (isNaN(distance)) {
-        distance = 1;
+        distance = 0;
       }
     }
+    directive.distance = distance;
 
-    var directive = this;
-    var executeExpr = directive.expression;
+    var immediateCheckExpr = element.getAttribute('infinite-scroll-immediate-check');
+    var immediateCheck = true;
+    if (immediateCheckExpr) {
+      immediateCheck = !!directive.vm.$get(immediateCheckExpr);
+    }
 
-    var scrollEventTarget = this.scrollEventTarget = getScrollEventTarget(element) || window;
+    if (immediateCheck) {
+      directive.doCheck();
+    }
 
-    this.scrollListener = throttle(function() {
-      if (disabled) return;
-      var viewportScrollTop = getScrollTop(scrollEventTarget);
-      var viewportBottom = viewportScrollTop + getVisibleHeight(scrollEventTarget);
-
-      var shouldTrigger = false;
-
-      if (scrollEventTarget !== element) {
-        var elementRect = element.getBoundingClientRect();
-        var elementBottom = getElementTop(element) - getElementTop(scrollEventTarget) + elementRect.bottom + viewportScrollTop;
-
-        shouldTrigger = viewportBottom + distance > elementBottom;
-      } else {
-        shouldTrigger = scrollEventTarget.scrollHeight - viewportBottom < distance;
+    var eventName = element.getAttribute('infinite-scroll-listen-for-event');
+    if (eventName) {
+      if (eventName) {
+        directive.vm.$on(eventName, function() {
+          directive.doCheck();
+        });
       }
+    }
+  },
 
-      if (shouldTrigger && executeExpr) {
-        directive.vm.$get(executeExpr);
-      }
-    }, 200);
+  doCheck: function() {
+    var scrollEventTarget = this.scrollEventTarget;
+    var element = this.el;
+    var distance = this.distance;
 
-    scrollEventTarget.addEventListener('scroll', this.scrollListener);
+    if (this.disabled) return;
+    var viewportScrollTop = getScrollTop(scrollEventTarget);
+    var viewportBottom = viewportScrollTop + getVisibleHeight(scrollEventTarget);
+
+    var shouldTrigger = false;
+
+    if (scrollEventTarget !== element) {
+      var elementBottom = getElementTop(element) - getElementTop(scrollEventTarget) + element.offsetHeight + viewportScrollTop;
+
+      shouldTrigger = viewportBottom + distance >= elementBottom;
+    } else {
+      shouldTrigger = scrollEventTarget.scrollHeight - viewportBottom <= distance;
+    }
+
+    if (shouldTrigger && this.expression) {
+      this.vm.$get(this.expression);
+    }
   },
 
   bind: function() {
