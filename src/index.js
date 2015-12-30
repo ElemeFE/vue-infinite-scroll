@@ -1,3 +1,5 @@
+'use strict';
+
 var Vue = require('vue');
 
 var throttle = function(fn, delay) {
@@ -171,15 +173,17 @@ Vue.directive('infiniteScroll', {
 
     this.bindTryCount = 0;
 
-    directive.timer = setTimeout(function() {
+    var tryBind = function() {
       if (directive.bindTryCount > 10) return;
       directive.bindTryCount++;
       if (isAttached(element)) {
         directive.doBind();
       } else {
-        directive.timer = setTimeout(arguments.callee, 50);
+        setTimeout(tryBind, 50);
       }
-    }, 50);
+    };
+
+    tryBind();
   },
 
   unbind() {
