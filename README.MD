@@ -7,6 +7,18 @@ vue-infinite-scroll is an infinite scroll directive for vue.js.
 npm install vue-infinite-scroll --save
 ```
 
+## Webpack
+
+```JavaScript
+require('vue-infinite-scroll');
+```
+
+## script tag
+
+```HTML
+<script src="../node_modules/vue-infinite-scroll/lib/index.js"></script>
+```
+
 # Usage
 
 Use v-infinite-scroll to enable the infinite scroll, and use infinite-scroll-* attributes to define its options.
