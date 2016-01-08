@@ -62,7 +62,7 @@ void function() {
       }
       currentNode = currentNode.parentNode;
     }
-    return null;
+    return window;
   };
 
   var getVisibleHeight = function(element) {
@@ -74,6 +74,9 @@ void function() {
   };
 
   var getElementTop = function(element) {
+    if (element === window) {
+      return document.documentElement.getBoundingClientRect().top + getScrollTop(window);
+    }
     return element.getBoundingClientRect().top + getScrollTop(window);
   };
 
@@ -99,7 +102,7 @@ void function() {
       var directive = this;
       var element = directive.el;
 
-      directive.scrollEventTarget = getScrollEventTarget(element) || window;
+      directive.scrollEventTarget = getScrollEventTarget(element);
       directive.scrollListener = throttle(directive.doCheck.bind(directive), 200);
       directive.scrollEventTarget.addEventListener('scroll', directive.scrollListener);
 
@@ -109,6 +112,9 @@ void function() {
       if (disabledExpr) {
         this.vm.$watch(disabledExpr, function(value) {
           directive.disabled = value;
+          if (!value && directive.immediateCheck) {
+            directive.doCheck();
+          }
         });
         disabled = !!directive.vm.$get(disabledExpr);
       }
@@ -129,6 +135,7 @@ void function() {
       if (immediateCheckExpr) {
         immediateCheck = !!directive.vm.$get(immediateCheckExpr);
       }
+      directive.immediateCheck = immediateCheck;
 
       if (immediateCheck) {
         directive.doCheck();
@@ -136,27 +143,30 @@ void function() {
 
       var eventName = element.getAttribute('infinite-scroll-listen-for-event');
       if (eventName) {
-        if (eventName) {
-          directive.vm.$on(eventName, function() {
-            directive.doCheck();
-          });
-        }
+        directive.vm.$on(eventName, function() {
+          directive.doCheck();
+        });
       }
     },
 
-    doCheck: function() {
+    doCheck: function(force) {
       var scrollEventTarget = this.scrollEventTarget;
       var element = this.el;
       var distance = this.distance;
 
-      if (this.disabled) return;
+      if (force !== true && this.disabled) return;
       var viewportScrollTop = getScrollTop(scrollEventTarget);
       var viewportBottom = viewportScrollTop + getVisibleHeight(scrollEventTarget);
 
       var shouldTrigger = false;
 
       if (scrollEventTarget !== element) {
-        var elementBottom = getElementTop(element) - getElementTop(scrollEventTarget) + element.offsetHeight + viewportScrollTop;
+        var elementBottom;
+        if (scrollEventTarget !== window) {
+          elementBottom = getElementTop(element) - getElementTop(scrollEventTarget) + element.offsetHeight + viewportScrollTop;
+        } else {
+          elementBottom = getElementTop(element) - getElementTop(scrollEventTarget) + element.offsetHeight;
+        }
 
         shouldTrigger = viewportBottom + distance >= elementBottom;
       } else {
