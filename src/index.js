@@ -203,7 +203,7 @@ void function() {
       tryBind();
     },
 
-    unbind() {
+    unbind: function() {
       this.scrollEventTarget.removeEventListener('scroll', this.scrollListener);
     }
   });
