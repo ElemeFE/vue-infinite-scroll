@@ -1,3 +1,4 @@
+/* global Vue */
 import infiniteScroll from './directive';
 
 if (window.Vue) {

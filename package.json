@@ -5,8 +5,9 @@
   "main": "vue-infinite-scroll.js",
   "jsnext:main": "./src/index.js",
   "scripts": {
-    "test": "npm run build && echo lol",
-    "build": "rollup -c"
+    "test": "npm run build && xo src/**/*",
+    "build": "rollup -c",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,11 @@
   "devDependencies": {
     "babel-preset-es2015-rollup": "^1.1.1",
     "rollup": "^0.25.4",
-    "rollup-plugin-babel": "^2.4.0"
+    "rollup-plugin-babel": "^2.4.0",
+    "xo": "^0.12.1"
+  },
+  "xo": {
+    "envs": ["browser"],
+    "space": true
   }
 }

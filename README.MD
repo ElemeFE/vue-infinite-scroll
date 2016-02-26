@@ -78,6 +78,13 @@ new Vue({
 | infinite-scroll-immediate-check | Boolean(default = true) - indicates that the directive should check immediately after bind. Useful if it's possible that the content is not tall enough to fill up the scrollable container. |
 | infinite-scroll-listen-for-event | infinite scroll will check again when the event is emitted in Vue instance. |
 
+## Development
+
+|Command|Description|
+|---|---|
+|npm run build|Build in umd format|
+|npm test|Lint code|
+
 # License
 
 MIT
