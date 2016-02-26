@@ -1,9 +1,6 @@
 .DS_Store
 node_modules
-dist
 coverage
 .idea
 .jshintrc
-/lib/
-/examples/
-webpack.config.js
+vue-infinite-scroll.js
