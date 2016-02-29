@@ -152,12 +152,7 @@ export default {
     if (scrollEventTarget === element) {
       shouldTrigger = scrollEventTarget.scrollHeight - viewportBottom <= distance;
     } else {
-      var elementBottom;
-      if (scrollEventTarget === window) {
-        elementBottom = getElementTop(element) - getElementTop(scrollEventTarget) + element.offsetHeight;
-      } else {
-        elementBottom = getElementTop(element) - getElementTop(scrollEventTarget) + element.offsetHeight + viewportScrollTop;
-      }
+      var elementBottom = getElementTop(element) - getElementTop(scrollEventTarget) + element.offsetHeight + viewportScrollTop;
 
       shouldTrigger = viewportBottom + distance >= elementBottom;
     }
