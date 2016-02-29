@@ -1,4 +1,5 @@
-# Overview
+# vue-infinite-scroll
+
 vue-infinite-scroll is an infinite scroll directive for vue.js.
 
 # Install
@@ -7,19 +8,32 @@ vue-infinite-scroll is an infinite scroll directive for vue.js.
 npm install vue-infinite-scroll --save
 ```
 
-## Webpack
+### CommonJS
+
+You can use any build tool which supports `commonjs`:
 
 ```JavaScript
-require('vue-infinite-scroll');
+// register globally
+var infiniteScroll =  require('vue-infinite-scroll');
+Vue.use(infiniteScroll)
+
+// or for a single instance
+var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
+new Vue({
+  directives: {infiniteScroll}
+})
+
 ```
 
-## script tag
+### Direct include
+
+You can use the CDN: https://npmcdn.com/vue-infinite-scroll, `infiniteScroll` is exposed to `window` and will automatically install itself. Also you can use your local copy:
 
 ```HTML
-<script src="../node_modules/vue-infinite-scroll/lib/index.js"></script>
+<script src="../node_modules/vue-infinite-scroll/vue-infinite-scroll.js"></script>
 ```
 
-# Usage
+## Usage
 
 Use v-infinite-scroll to enable the infinite scroll, and use infinite-scroll-* attributes to define its options.
 
@@ -64,5 +78,13 @@ new Vue({
 | infinite-scroll-immediate-check | Boolean(default = true) - indicates that the directive should check immediately after bind. Useful if it's possible that the content is not tall enough to fill up the scrollable container. |
 | infinite-scroll-listen-for-event | infinite scroll will check again when the event is emitted in Vue instance. |
 
+## Development
+
+|Command|Description|
+|---|---|
+|npm run build|Build in umd format|
+|npm test|Lint code|
+
 # License
+
 MIT
