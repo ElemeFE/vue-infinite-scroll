@@ -64,7 +64,7 @@ var getVisibleHeight = function (element) {
 
 var getElementTop = function (element) {
   if (element === window) {
-    return document.documentElement.getBoundingClientRect().top + getScrollTop(window);
+    return getScrollTop(window);
   }
   return element.getBoundingClientRect().top + getScrollTop(window);
 };
