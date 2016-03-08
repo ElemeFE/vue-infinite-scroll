@@ -10,5 +10,4 @@ function install(Vue) {
   Vue.directive('infiniteScroll', infiniteScroll);
 }
 
-export default install;
-export {infiniteScroll};
+export { install, infiniteScroll };
