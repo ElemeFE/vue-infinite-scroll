@@ -1,11 +1,8 @@
 import infiniteScroll from './../../vue-infinite-scroll';
 import Vue from 'vue';
 
-function scrollToBottom(targetElement, distance = 0) {
-  if (targetElement === 'window') {
-    document.body.scrollTop = document.body.scrollHeight - distance;
-    console.log(window.innerHeight, document.body.scrollTop);
-  } else if (targetElement === 'parentNode') {
+const scrollToBottom = (targetElement, distance = 0) => {
+  if (targetElement === 'parentNode') {
     const element = document.querySelector('.app');
 
     element.scrollTop = element.getBoundingClientRect().top + element.getBoundingClientRect().bottom - distance;
@@ -15,16 +12,10 @@ function scrollToBottom(targetElement, distance = 0) {
     element.scrollTop = element.scrollHeight - element.offsetHeight - distance;
   }
 };
-
-function scrollToTop(targetElement) {
-  if (targetElement === 'window') {
-    document.body.scrollToTop = 0;
-  } else {
-    document.querySelector('.app').scrollTop = 0;
-  }
+const scrollToTop = (targetElement) => {
+  document.querySelector('.app').scrollTop = 0;
 };
-
-function createVM(targetElement = 'window', distance = 0, immediate = true) {
+const createVM = (targetElement = 'window', distance = 0, immediate = true) => {
   let template;
   switch(targetElement) {
     case 'window':
