@@ -5,7 +5,7 @@
   "main": "vue-infinite-scroll.js",
   "jsnext:main": "./src/index.js",
   "scripts": {
-    "test": "npm run build && xo src/**/*",
+    "test": "npm run build && xo src/**/* && karma start",
     "build": "rollup -c",
     "prepublish": "npm run build"
   },
@@ -24,12 +24,24 @@
   },
   "devDependencies": {
     "babel-preset-es2015-rollup": "^1.1.1",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.21",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-jasmine": "^0.3.7",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-rollup-preprocessor": "^2.0.1",
+    "phantomjs-prebuilt": "^2.1.5",
     "rollup": "^0.25.4",
     "rollup-plugin-babel": "^2.4.0",
+    "rollup-plugin-commonjs": "^2.2.1",
+    "rollup-plugin-env": "^0.21.2",
+    "rollup-plugin-node-resolve": "^1.5.0",
     "xo": "^0.12.1"
   },
   "xo": {
-    "envs": ["browser"],
+    "envs": [
+      "browser"
+    ],
     "space": true
   }
 }
