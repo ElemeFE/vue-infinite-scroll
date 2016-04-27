@@ -44,7 +44,8 @@ var getComputedStyle = document.defaultView.getComputedStyle;
 
 var getScrollEventTarget = function (element) {
   var currentNode = element;
-  while (currentNode && currentNode.tagName !== 'HTML' && currentNode.nodeType === 1) {
+  // bugfix, see http://w3help.org/zh-cn/causes/SD9013 and http://stackoverflow.com/questions/17016740/onscroll-function-is-not-working-for-chrome
+  while (currentNode && currentNode.tagName !== 'HTML' && currentNode.tagName !== 'BODY' && currentNode.nodeType === 1) {
     var overflowY = getComputedStyle(currentNode).overflowY;
     if (overflowY === 'scroll' || overflowY === 'auto') {
       return currentNode;
