@@ -155,7 +155,7 @@ export default {
     } else {
       var elementBottom = getElementTop(element) - getElementTop(scrollEventTarget) + element.offsetHeight + viewportScrollTop;
 
-      shouldTrigger = viewportBottom + distance >= elementBottom;
+      shouldTrigger = parseInt(viewportBottom + distance) >= parseInt(elementBottom);
     }
 
     if (shouldTrigger && this.expression) {
