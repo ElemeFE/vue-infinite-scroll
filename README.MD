@@ -27,7 +27,7 @@ new Vue({
 
 ### Direct include
 
-You can use the CDN: https://npmcdn.com/vue-infinite-scroll, `infiniteScroll` is exposed to `window` and will automatically install itself. Also you can use your local copy:
+You can use the CDN: https://unpkg.com/vue-infinite-scroll, `infiniteScroll` is exposed to `window` and will automatically install itself. Also you can use your local copy:
 
 ```HTML
 <script src="../node_modules/vue-infinite-scroll/vue-infinite-scroll.js"></script>
