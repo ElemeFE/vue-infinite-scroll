@@ -19,9 +19,6 @@
   ],
   "author": "long.zhang@ele.me",
   "license": "MIT",
-  "peerDependencies": {
-    "vue": "^1.0.10"
-  },
   "devDependencies": {
     "babel-preset-es2015-rollup": "^1.1.1",
     "jasmine-core": "^2.4.1",
@@ -36,6 +33,7 @@
     "rollup-plugin-commonjs": "^2.2.1",
     "rollup-plugin-env": "^0.21.2",
     "rollup-plugin-node-resolve": "^1.5.0",
+    "vue": "^2.0.3",
     "xo": "^0.12.1"
   },
   "xo": {
