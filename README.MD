@@ -18,7 +18,22 @@ var infiniteScroll =  require('vue-infinite-scroll');
 Vue.use(infiniteScroll)
 
 // or for a single instance
-var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
+var infiniteScroll = require('vue-infinite-scroll');
+new Vue({
+  directives: {infiniteScroll}
+})
+
+```
+
+Or in ES2015:
+
+```JavaScript
+// register globally
+import infiniteScroll from 'vue-infinite-scroll'
+Vue.use(infiniteScroll)
+
+// or for a single instance
+import infiniteScroll from 'vue-infinite-scroll'
 new Vue({
   directives: {infiniteScroll}
 })
