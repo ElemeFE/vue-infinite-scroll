@@ -196,6 +196,7 @@ export default {
   },
 
   unbind(el) {
-    el[ctx].scrollEventTarget.removeEventListener('scroll', el[ctx].scrollListener);
+    if (el && el[ctx] && el[ctx].scrollEventTarget)
+      el[ctx].scrollEventTarget.removeEventListener('scroll', el[ctx].scrollListener);
   }
 };
