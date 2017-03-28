@@ -4,3 +4,4 @@ coverage
 .idea
 .jshintrc
 vue-infinite-scroll.js
+*.log
