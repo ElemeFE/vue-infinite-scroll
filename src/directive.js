@@ -149,7 +149,7 @@ var doCheck = function (force) {
   var element = this.el;
   var distance = this.distance;
 
-  if (force !== true && this.disabled) return; //eslint-disable-line
+  if (force !== true && this.disabled || !isAttached(element)) return; //eslint-disable-line
   var viewportScrollTop = getScrollTop(scrollEventTarget);
   var viewportBottom = viewportScrollTop + getVisibleHeight(scrollEventTarget);
 
