@@ -93,8 +93,18 @@ var doBind = function () {
   var directive = this;
   var element = directive.el;
 
+  var throttleDelayExpr = element.getAttribute('infinite-scroll-throttle-delay');
+  var throttleDelay = 200;
+  if (throttleDelayExpr) {
+    throttleDelay = Number(directive.vm[throttleDelayExpr] || throttleDelayExpr);
+    if (isNaN(throttleDelay)) {
+      throttleDelay = 200;
+    }
+  }
+  directive.throttleDelay = throttleDelay;
+
   directive.scrollEventTarget = getScrollEventTarget(element);
-  directive.scrollListener = throttle(doCheck.bind(directive), 200);
+  directive.scrollListener = throttle(doCheck.bind(directive), directive.throttleDelay);
   directive.scrollEventTarget.addEventListener('scroll', directive.scrollListener);
 
   this.vm.$on('hook:beforeDestroy', function () {
