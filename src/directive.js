@@ -97,7 +97,7 @@ var doBind = function () {
   var throttleDelay = 200;
   if (throttleDelayExpr) {
     throttleDelay = Number(directive.vm[throttleDelayExpr] || throttleDelayExpr);
-    if (isNaN(throttleDelay)) {
+    if (isNaN(throttleDelay) || throttleDelay < 0) {
       throttleDelay = 200;
     }
   }

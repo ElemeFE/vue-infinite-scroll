@@ -92,6 +92,7 @@ new Vue({
 | infinite-scroll-distance | Number(default = 0) - the minimum distance between the bottom of the element and the bottom of the viewport before the v-infinite-scroll method is executed. |
 | infinite-scroll-immediate-check | Boolean(default = true) - indicates that the directive should check immediately after bind. Useful if it's possible that the content is not tall enough to fill up the scrollable container. |
 | infinite-scroll-listen-for-event | infinite scroll will check again when the event is emitted in Vue instance. |
+| infinite-scroll-throttle-delay | Number(default = 200) - interval(ms) between next time checking and this time  |
 
 ## Development
 
