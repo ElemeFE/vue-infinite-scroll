@@ -186,26 +186,32 @@ export default {
       expression: binding.value
     };
     const args = arguments;
-    el[ctx].vm.$on('hook:mounted', function () {
-      el[ctx].vm.$nextTick(function () {
-        if (isAttached(el)) {
-          doBind.call(el[ctx], args);
-        }
+    el[ctx].vm.$nextTick(function () {
+      if (isAttached(el)) {
+        doBind.call(el[ctx], args);
+      } else {
+        el[ctx].vm.$on('hook:mounted', function () {
+          el[ctx].vm.$nextTick(function () {
+            if (isAttached(el)) {
+              doBind.call(el[ctx], args);
+            }
 
-        el[ctx].bindTryCount = 0;
+            el[ctx].bindTryCount = 0;
 
-        var tryBind = function () {
-          if (el[ctx].bindTryCount > 10) return; //eslint-disable-line
-          el[ctx].bindTryCount++;
-          if (isAttached(el)) {
-            doBind.call(el[ctx], args);
-          } else {
-            setTimeout(tryBind, 50);
-          }
-        };
+            var tryBind = function () {
+              if (el[ctx].bindTryCount > 10) return; //eslint-disable-line
+              el[ctx].bindTryCount++;
+              if (isAttached(el)) {
+                doBind.call(el[ctx], args);
+              } else {
+                setTimeout(tryBind, 50);
+              }
+            };
 
-        tryBind();
-      });
+            tryBind();
+          });
+        });
+      }
     });
   },
 
