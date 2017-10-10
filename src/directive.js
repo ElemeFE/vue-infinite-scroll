@@ -172,6 +172,10 @@ var doCheck = function (force) {
 
     shouldTrigger = viewportBottom + distance >= elementBottom;
   }
+  
+  // If triggered last time, then ignore this as there is no enough height growth
+  if(this.shouldTrigger === shouldTrigger) return;
+  this.shouldTrigger = shouldTrigger;
 
   if (shouldTrigger && this.expression) {
     this.expression();
