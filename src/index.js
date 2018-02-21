@@ -1,10 +1,10 @@
 import InfiniteScroll from './directive';
 
-const install = function(Vue) {
+const install = function (Vue) {
   Vue.directive('InfiniteScroll', InfiniteScroll);
 };
 
-if (window.Vue) {
+if (process.BROWSER_BUILD && window.Vue) {
   window.infiniteScroll = InfiniteScroll;
   Vue.use(install); // eslint-disable-line
 }
