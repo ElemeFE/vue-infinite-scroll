@@ -35,7 +35,7 @@ var throttle = function (fn, delay) {
 };
 
 var getScrollTop = function (element) {
-  if (element === window) {
+  if (process.BROWSER_BUILD && element === window) {
     return Math.max(window.pageYOffset || 0, document.documentElement.scrollTop);
   }
 
@@ -54,11 +54,11 @@ var getScrollEventTarget = function (element) {
     }
     currentNode = currentNode.parentNode;
   }
-  return window;
+  return process.BROWSER_BUILD ? window : null;
 };
 
 var getVisibleHeight = function (element) {
-  if (element === window) {
+  if (process.BROWSER_BUILD && element === window) {
     return document.documentElement.clientHeight;
   }
 
@@ -66,10 +66,10 @@ var getVisibleHeight = function (element) {
 };
 
 var getElementTop = function (element) {
-  if (element === window) {
+  if (process.BROWSER_BUILD && element === window) {
     return getScrollTop(window);
   }
-  return element.getBoundingClientRect().top + getScrollTop(window);
+  return process.BROWSER_BUILD ? element.getBoundingClientRect().top + getScrollTop(window) : null;
 };
 
 var isAttached = function (element) {
@@ -84,6 +84,30 @@ var isAttached = function (element) {
     currentNode = currentNode.parentNode;
   }
   return false;
+};
+
+var doCheck = function (force) {
+  var scrollEventTarget = this.scrollEventTarget;
+  var element = this.el;
+  var distance = this.distance;
+
+  if (force !== true && this.disabled) return; //eslint-disable-line
+  var viewportScrollTop = getScrollTop(scrollEventTarget);
+  var viewportBottom = viewportScrollTop + getVisibleHeight(scrollEventTarget);
+
+  var shouldTrigger = false;
+
+  if (scrollEventTarget === element) {
+    shouldTrigger = scrollEventTarget.scrollHeight - viewportBottom <= distance;
+  } else {
+    var elementBottom = getElementTop(element) - getElementTop(scrollEventTarget) + element.offsetHeight + viewportScrollTop;
+
+    shouldTrigger = viewportBottom + distance >= elementBottom;
+  }
+
+  if (shouldTrigger && this.expression) {
+    this.expression();
+  }
 };
 
 var doBind = function () {
@@ -115,7 +139,7 @@ var doBind = function () {
   var disabled = false;
 
   if (disabledExpr) {
-    this.vm.$watch(disabledExpr, function(value) {
+    this.vm.$watch(disabledExpr, function (value) {
       directive.disabled = value;
       if (!value && directive.immediateCheck) {
         doCheck.call(directive);
@@ -148,33 +172,9 @@ var doBind = function () {
 
   var eventName = element.getAttribute('infinite-scroll-listen-for-event');
   if (eventName) {
-    directive.vm.$on(eventName, function() {
+    directive.vm.$on(eventName, function () {
       doCheck.call(directive);
     });
-  }
-};
-
-var doCheck = function (force) {
-  var scrollEventTarget = this.scrollEventTarget;
-  var element = this.el;
-  var distance = this.distance;
-
-  if (force !== true && this.disabled) return; //eslint-disable-line
-  var viewportScrollTop = getScrollTop(scrollEventTarget);
-  var viewportBottom = viewportScrollTop + getVisibleHeight(scrollEventTarget);
-
-  var shouldTrigger = false;
-
-  if (scrollEventTarget === element) {
-    shouldTrigger = scrollEventTarget.scrollHeight - viewportBottom <= distance;
-  } else {
-    var elementBottom = getElementTop(element) - getElementTop(scrollEventTarget) + element.offsetHeight + viewportScrollTop;
-
-    shouldTrigger = viewportBottom + distance >= elementBottom;
-  }
-
-  if (shouldTrigger && this.expression) {
-    this.expression();
   }
 };
 
@@ -210,7 +210,8 @@ export default {
   },
 
   unbind(el) {
-    if (el && el[ctx] && el[ctx].scrollEventTarget)
+    if (el && el[ctx] && el[ctx].scrollEventTarget) {
       el[ctx].scrollEventTarget.removeEventListener('scroll', el[ctx].scrollListener);
+    }
   }
 };

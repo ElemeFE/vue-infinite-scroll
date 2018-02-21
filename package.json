@@ -30,8 +30,10 @@
     "phantomjs-prebuilt": "^2.1.5",
     "rollup": "^0.41.4",
     "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-uglify": "1.0.1",
+    "rollup-plugin-commonjs": "^8.3.0",
+    "rollup-plugin-env": "^0.21.4",
     "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-uglify": "1.0.1",
     "vue": "^2.0.3",
     "xo": "^0.12.1"
   },
