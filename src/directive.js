@@ -152,12 +152,16 @@ var doBind = function () {
       doCheck.call(directive);
     });
   }
+
+  directive.reversedCheck = element.hasAttribute('infinite-scroll-reverse');
+
 };
 
 var doCheck = function (force) {
   var scrollEventTarget = this.scrollEventTarget;
   var element = this.el;
   var distance = this.distance;
+  var reversed = this.reversedCheck;
 
   if (force !== true && this.disabled) return; //eslint-disable-line
   var viewportScrollTop = getScrollTop(scrollEventTarget);
@@ -166,11 +170,19 @@ var doCheck = function (force) {
   var shouldTrigger = false;
 
   if (scrollEventTarget === element) {
-    shouldTrigger = scrollEventTarget.scrollHeight - viewportBottom <= distance;
+      if (reversed) {
+        shouldTrigger = scrollEventTarget.scrollTop <= distance;
+      } else {
+        shouldTrigger = scrollEventTarget.scrollHeight - viewportBottom <= distance;
+      }
   } else {
+    var elementTop = getElementTop(element) - getElementTop(scrollEventTarget);
     var elementBottom = getElementTop(element) - getElementTop(scrollEventTarget) + element.offsetHeight + viewportScrollTop;
-
-    shouldTrigger = viewportBottom + distance >= elementBottom;
+    if (reversed) {
+      shouldTrigger = viewportScrollTop <= elementTop;
+    } else {
+      shouldTrigger = viewportBottom + distance >= elementBottom;
+    }
   }
 
   if (shouldTrigger && this.expression) {

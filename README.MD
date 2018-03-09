@@ -88,6 +88,7 @@ new Vue({
 
 | Option | Description |
 | ----- | ----- |
+| infinite-scroll-reverse | Instead triggering at the bottom, v-infinite-scroll will trigger on top of element. |
 | infinite-scroll-disabled | infinite scroll will be disabled if the value of this attribute is true. |
 | infinite-scroll-distance | Number(default = 0) - the minimum distance between the bottom of the element and the bottom of the viewport before the v-infinite-scroll method is executed. |
 | infinite-scroll-immediate-check | Boolean(default = true) - indicates that the directive should check immediately after bind. Useful if it's possible that the content is not tall enough to fill up the scrollable container. |
