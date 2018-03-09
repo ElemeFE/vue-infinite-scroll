@@ -171,7 +171,7 @@ var doCheck = function (force) {
 
   if (scrollEventTarget === element) {
       if (reversed) {
-        shouldTrigger = scrollEventTarget.scrollHeight + viewportScrollTop <= distance
+        shouldTrigger = scrollEventTarget.scrollTop <= distance;
       } else {
         shouldTrigger = scrollEventTarget.scrollHeight - viewportBottom <= distance;
       }
