@@ -55,7 +55,7 @@ Use v-infinite-scroll to enable the infinite scroll, and use infinite-scroll-* a
 The method appointed as the value of v-infinite-scroll will be executed when the bottom of the element reaches the bottom of the viewport.
 
 ```HTML
-<div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+<div v-infinite-scroll="loadMore" :infinite-scroll-disabled="busy" infinite-scroll-distance="10">
   ...
 </div>
 ```
