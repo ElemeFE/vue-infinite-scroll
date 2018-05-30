@@ -75,7 +75,7 @@ new Vue({
 
       setTimeout(() => {
         for (var i = 0, j = 10; i < j; i++) {
-          this.data.push({ name: count++ });
+          this.data.push({ name: i++ });
         }
         this.busy = false;
       }, 1000);
