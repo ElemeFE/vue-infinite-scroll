@@ -4,8 +4,8 @@ var throttle = function (fn, delay) {
   var now, lastExec, timer, context, args; //eslint-disable-line
 
   var execute = function () {
+    lastExec = Date.now();
     fn.apply(context, args);
-    lastExec = now;
   };
 
   return function () {
