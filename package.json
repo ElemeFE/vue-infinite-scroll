@@ -4,6 +4,7 @@
   "description": "An infinite scroll directive for vue.js.",
   "main": "vue-infinite-scroll.js",
   "jsnext:main": "./src/index.js",
+  "types": "vue-infinite-scroll.d.ts",
   "scripts": {
     "test": "npm run build && xo src/**/* && karma start",
     "build": "rollup -c",
