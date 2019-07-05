@@ -85,7 +85,7 @@ export const createVM = (...params) => {
 
   const instance = new Vue({
     el: "#app",
-    template: getTemplate(params),
+    template: getTemplate(...params),
     data() {
       return {
         busy: false,
@@ -118,22 +118,21 @@ export const createVMComputed = (...params) => {
 
   const instance = new Vue({
     el: "#app",
-    template: getTemplate(params),
+    template: getTemplate(...params),
     data() {
       return {
         callCount: 0,
-        _busy: false
+        selfBusy: false
       };
     },
     computed: {
       busy() {
-        console.log('this._busy===>>>>', this._busy);
-        return !!this._busy
+        return this.selfBusy
       }
     },
     methods: {
       loadMore() {
-        this._busy = true;
+        this.selfBusy = true;
         this.callCount++;
         console.log("loaded!");
       }
