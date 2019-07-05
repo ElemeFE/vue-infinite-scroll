@@ -84,6 +84,15 @@ new Vue({
 });
 ```
 
+## if execute is a Promise
+if execute is a Promise, it will be disabled when executing.
+```js
+if (window.Promise && this.vm[executeName] instanceof window.Promise) {
+  this.config._disabled = true;
+  this.vm[executeName]().finally(() => (this.config._disabled = false));
+}
+```
+
 # Options
 
 | Option | Description |

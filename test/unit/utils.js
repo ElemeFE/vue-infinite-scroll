@@ -1,10 +1,14 @@
-import infiniteScroll from "../../src/index";
-import Vue from "vue/dist/vue.esm";
+import infiniteScroll from '../../src/index';
+import Vue from 'vue/dist/vue.esm';
 
 export const THROTTLE_DELAY = 200;
 
-export const scrollToBottom = (targetElement, distance = 0, selector = '.app') => {
-  if (targetElement === "parentNode") {
+export const scrollToBottom = (
+  targetElement,
+  distance = 0,
+  selector = '.app'
+) => {
+  if (targetElement === 'parentNode') {
     const element = document.querySelector(selector);
 
     element.scrollTop =
@@ -24,14 +28,14 @@ export const scrollToTop = (selector = '.app') => {
 };
 
 export const getTemplate = (
-  targetElement = "window",
+  targetElement = 'window',
   distance = 0,
-  throttleDelay=THROTTLE_DELAY,
+  throttleDelay = THROTTLE_DELAY,
   immediate = false
 ) => {
   let template;
   switch (targetElement) {
-    case "window":
+    case 'window':
       template = `<div class="app"
                     style="height: 1200px; width: 400px; background-color: #000"
                     v-infinite-scroll:loadMore="{
@@ -43,7 +47,7 @@ export const getTemplate = (
                      }">
                   </div>`;
       break;
-    case "parentNode":
+    case 'parentNode':
       template = `<div class="app"
                   style="height: 600px; width: 400px; overflow: auto; background-color: #eee;">
                   <div style="height: 1200px; width: 400px;"
@@ -58,7 +62,7 @@ export const getTemplate = (
                   </div>
                 </div>`;
       break;
-    case "currentNode":
+    case 'currentNode':
     default:
       template = `<div class="app"
                   style="height: 600px; width: 400px; background-color: #ccc; overflow: auto;"
@@ -79,12 +83,12 @@ export const getTemplate = (
 export const createVM = (...params) => {
   Vue.use(infiniteScroll);
 
-  const element = document.createElement("div");
-  element.setAttribute("id", "app");
-  document.querySelector("body").appendChild(element);
+  const element = document.createElement('div');
+  element.setAttribute('id', 'app');
+  document.querySelector('body').appendChild(element);
 
   const instance = new Vue({
-    el: "#app",
+    el: '#app',
     template: getTemplate(...params),
     data() {
       return {
@@ -96,7 +100,7 @@ export const createVM = (...params) => {
       loadMore() {
         this.busy = true;
         this.callCount++;
-        console.log("loaded!");
+        console.log('loaded!');
       }
     }
   });
@@ -112,12 +116,12 @@ export const createVM = (...params) => {
 export const createVMComputed = (...params) => {
   Vue.use(infiniteScroll);
 
-  const element = document.createElement("div");
-  element.setAttribute("id", "app");
-  document.querySelector("body").appendChild(element);
+  const element = document.createElement('div');
+  element.setAttribute('id', 'app');
+  document.querySelector('body').appendChild(element);
 
   const instance = new Vue({
-    el: "#app",
+    el: '#app',
     template: getTemplate(...params),
     data() {
       return {
@@ -127,14 +131,14 @@ export const createVMComputed = (...params) => {
     },
     computed: {
       busy() {
-        return this.selfBusy
+        return this.selfBusy;
       }
     },
     methods: {
       loadMore() {
         this.selfBusy = true;
         this.callCount++;
-        console.log("loaded!");
+        console.log('loaded!');
       }
     }
   });

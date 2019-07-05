@@ -5,11 +5,11 @@ import {
   createVM,
   createVMComputed,
   THROTTLE_DELAY
-} from "./utils";
-import infiniteScroll from "../../src/index";
-import Vue from "vue/dist/vue.esm";
+} from './utils';
+import infiniteScroll from '../../src/index';
+import Vue from 'vue/dist/vue.esm';
 
-const scrollTargetElements = ["parentNode", "currentNode"];
+const scrollTargetElements = ['parentNode', 'currentNode'];
 
 scrollTargetElements.forEach(targetElement => {
   describe(`${targetElement} scroll test`, () => {
@@ -19,19 +19,19 @@ scrollTargetElements.forEach(targetElement => {
       vm = createVM(targetElement);
 
       vm.$nextTick(() => {
-        spyOn(vm, "loadMore");
+        spyOn(vm, 'loadMore');
 
         scrollToBottom(targetElement);
         setTimeout(done);
       });
     });
 
-    it("the function should be called once", () => {
+    it('the function should be called once', () => {
       expect(vm.loadMore).toHaveBeenCalledTimes(1);
     });
 
     it('test "infinite-scroll-listen-for-event"', () => {
-      vm.$emit("docheck");
+      vm.$emit('docheck');
       expect(vm.loadMore).toHaveBeenCalledTimes(2);
     });
 
@@ -49,12 +49,12 @@ scrollTargetElements.forEach(targetElement => {
       vm = createVM(targetElement, 50);
 
       vm.$nextTick(() => {
-        spyOn(vm, "loadMore");
+        spyOn(vm, 'loadMore');
         setTimeout(done);
       });
     });
 
-    it("the function should be called when scroll to bottom", done => {
+    it('the function should be called when scroll to bottom', done => {
       scrollToBottom(targetElement, 0);
 
       setTimeout(() => {
@@ -63,7 +63,7 @@ scrollTargetElements.forEach(targetElement => {
       });
     });
 
-    it("the function should be called when scroll to the bottom of 50px distance", done => {
+    it('the function should be called when scroll to the bottom of 50px distance', done => {
       scrollToBottom(targetElement, 50);
       setTimeout(() => {
         expect(vm.loadMore).toHaveBeenCalled();
@@ -71,7 +71,7 @@ scrollTargetElements.forEach(targetElement => {
       });
     });
 
-    it("the function should not be called", done => {
+    it('the function should not be called', done => {
       scrollToBottom(targetElement, 51);
       setTimeout(() => {
         expect(vm.loadMore).not.toHaveBeenCalled();
@@ -94,9 +94,9 @@ scrollTargetElements.forEach(targetElement => {
       vm.$nextTick(done);
     });
 
-    it("the function should not be called when vm.busy is true", done => {
+    it('the function should not be called when vm.busy is true', done => {
       vm.busy = true;
-      spyOn(vm, "loadMore");
+      spyOn(vm, 'loadMore');
       scrollToBottom(targetElement, 0);
       setTimeout(() => {
         expect(vm.loadMore).not.toHaveBeenCalled();
@@ -104,7 +104,7 @@ scrollTargetElements.forEach(targetElement => {
       });
     });
 
-    it("the function should be called 1 times when vm.busy is true after once", done => {
+    it('the function should be called 1 times when vm.busy is true after once', done => {
       scrollToBottom(targetElement, 0);
       setTimeout(() => {
         scrollToTop();
@@ -133,9 +133,9 @@ scrollTargetElements.forEach(targetElement => {
       vm.$nextTick(done);
     });
 
-    it("the function should not be called when computed vm.busy is true", done => {
+    it('the function should not be called when computed vm.busy is true', done => {
       vm.selfBusy = true;
-      spyOn(vm, "loadMore");
+      spyOn(vm, 'loadMore');
       scrollToBottom(targetElement, 0);
       setTimeout(() => {
         expect(vm.loadMore).not.toHaveBeenCalled();
@@ -143,7 +143,7 @@ scrollTargetElements.forEach(targetElement => {
       });
     });
 
-    it("the function should be called 1 times when computed vm.busy is true after once", done => {
+    it('the function should be called 1 times when computed vm.busy is true after once', done => {
       scrollToBottom(targetElement, 0);
       setTimeout(() => {
         scrollToTop();
@@ -168,9 +168,9 @@ scrollTargetElements.forEach(targetElement => {
 /**
  * scroll keep-alive test
  */
-describe("scroll keep-alive test", () => {
+describe('scroll keep-alive test', () => {
   const component1 = {
-    template: getTemplate("parentNode"),
+    template: getTemplate('parentNode'),
     data() {
       return {
         busy: false,
@@ -180,7 +180,7 @@ describe("scroll keep-alive test", () => {
     methods: {
       loadMore() {
         this.callCount++;
-        console.log("loaded!");
+        console.log('loaded!');
       }
     }
   };
@@ -194,12 +194,12 @@ describe("scroll keep-alive test", () => {
   const createKeepAliveVM = () => {
     Vue.use(infiniteScroll);
 
-    const element = document.createElement("div");
-    element.setAttribute("id", "app");
-    document.querySelector("body").appendChild(element);
+    const element = document.createElement('div');
+    element.setAttribute('id', 'app');
+    document.querySelector('body').appendChild(element);
 
     const instance = new Vue({
-      el: "#app",
+      el: '#app',
       template: `<div>
                   <keep-alive>
                     <component :is="currentComponent"></component>
@@ -211,7 +211,7 @@ describe("scroll keep-alive test", () => {
       },
       data() {
         return {
-          currentComponent: "component1"
+          currentComponent: 'component1'
         };
       }
     });
@@ -226,16 +226,16 @@ describe("scroll keep-alive test", () => {
     vm.$nextTick(done);
   });
 
-  it("change to component2 will not execute component1 function while scroll", done => {
-    scrollToBottom("parentNode", 0);
+  it('change to component2 will not execute component1 function while scroll', done => {
+    scrollToBottom('parentNode', 0);
     setTimeout(() => {
       expect(vm.$children[0].$data.callCount).toBe(1);
       // reset component1 scroll
-      scrollToTop(".app");
+      scrollToTop('.app');
       setTimeout(() => {
-        vm.currentComponent = "component2";
+        vm.currentComponent = 'component2';
         vm.$nextTick(() => {
-          scrollToBottom("currentNode", 0, ".app2");
+          scrollToBottom('currentNode', 0, '.app2');
           setTimeout(() => {
             expect(vm.$children[0].$data.callCount).toBe(1);
             done();
@@ -254,9 +254,9 @@ describe("scroll keep-alive test", () => {
 /**
  * scroll v-if test
  */
-describe("scroll v-if test", () => {
+describe('scroll v-if test', () => {
   const component1 = {
-    template: getTemplate("parentNode"),
+    template: getTemplate('parentNode'),
     data() {
       return {
         busy: false,
@@ -266,7 +266,7 @@ describe("scroll v-if test", () => {
     methods: {
       loadMore() {
         this.callCount++;
-        console.log("loaded!");
+        console.log('loaded!');
       }
     }
   };
@@ -274,12 +274,12 @@ describe("scroll v-if test", () => {
   const createKeepAliveVM = () => {
     Vue.use(infiniteScroll);
 
-    const element = document.createElement("div");
-    element.setAttribute("id", "app");
-    document.querySelector("body").appendChild(element);
+    const element = document.createElement('div');
+    element.setAttribute('id', 'app');
+    document.querySelector('body').appendChild(element);
 
     const instance = new Vue({
-      el: "#app",
+      el: '#app',
       template: `<div>
                   <component1 v-if="currentComponent === 'component1'" ref="component1"></component1>
                 </div>`,
@@ -288,7 +288,7 @@ describe("scroll v-if test", () => {
       },
       data() {
         return {
-          currentComponent: ""
+          currentComponent: ''
         };
       }
     });
@@ -304,9 +304,9 @@ describe("scroll v-if test", () => {
   });
 
   it('the function should be called when v-if="true"', done => {
-    vm.currentComponent = "component1";
+    vm.currentComponent = 'component1';
     vm.$nextTick(() => {
-      scrollToBottom("parentNode", 0);
+      scrollToBottom('parentNode', 0);
       setTimeout(() => {
         expect(vm.$refs.component1.$data.callCount).toBe(1);
         done();

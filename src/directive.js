@@ -1,4 +1,4 @@
-const ctx = "@@InfiniteScroll";
+const ctx = '@@InfiniteScroll';
 
 const throttle = function(fn, delay) {
   let now, lastExec, timer, context, args;
@@ -50,12 +50,12 @@ const getScrollEventTarget = function(element) {
   // bugfix, see http://w3help.org/zh-cn/causes/SD9013 and http://stackoverflow.com/questions/17016740/onscroll-function-is-not-working-for-chrome
   while (
     currentNode &&
-    currentNode.tagName !== "HTML" &&
-    currentNode.tagName !== "BODY" &&
+    currentNode.tagName !== 'HTML' &&
+    currentNode.tagName !== 'BODY' &&
     currentNode.nodeType === 1
   ) {
     const overflowY = getComputedStyle(currentNode).overflowY;
-    if (overflowY === "scroll" || overflowY === "auto") {
+    if (overflowY === 'scroll' || overflowY === 'auto') {
       return currentNode;
     }
     currentNode = currentNode.parentNode;
@@ -89,22 +89,21 @@ const doBind = function() {
   directive.scrollEventTarget = getScrollEventTarget(element);
   directive.scrollListener = throttle(doCheck.bind(directive), throttleDelay);
   directive.scrollEventTarget.addEventListener(
-    "scroll",
+    'scroll',
     directive.scrollListener
   );
 
   // beforeDestroy 注销绑定事件
-  this.vm.$on("hook:beforeDestroy", () => {
+  this.vm.$on('hook:beforeDestroy', () => {
     directive.scrollEventTarget.removeEventListener(
-      "scroll",
+      'scroll',
       directive.scrollListener
     );
-    // this.binded = false;
   });
   // deactivated 注销绑定事件
-  this.vm.$on("hook:deactivated", () => {
+  this.vm.$on('hook:deactivated', () => {
     directive.scrollEventTarget.removeEventListener(
-      "scroll",
+      'scroll',
       directive.scrollListener
     );
     this.binded = false;
@@ -182,7 +181,7 @@ export default {
       executeName: binding.arg,
       config: {
         ...defaultConfig,
-        ...(typeof binding.value === "number"
+        ...(typeof binding.value === 'number'
           ? { distance: binding.value }
           : binding.value)
       }
@@ -191,15 +190,15 @@ export default {
     if (el[ctx].vm.$el) {
       doBind.call(el[ctx]);
     } else {
-      el[ctx].vm.$on("hook:mounted", doBind.bind(el[ctx]));
+      el[ctx].vm.$on('hook:mounted', doBind.bind(el[ctx]));
     }
-    el[ctx].vm.$on("hook:activated", doBind.bind(el[ctx]));
+    el[ctx].vm.$on('hook:activated', doBind.bind(el[ctx]));
   },
 
   unbind(el) {
     if (el && el[ctx] && el[ctx].scrollEventTarget)
       el[ctx].scrollEventTarget.removeEventListener(
-        "scroll",
+        'scroll',
         el[ctx].scrollListener
       );
   }

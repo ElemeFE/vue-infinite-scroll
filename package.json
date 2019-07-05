@@ -5,8 +5,10 @@
   "main": "vue-infinite-scroll.js",
   "jsnext:main": "./src/index.js",
   "scripts": {
-    "test": "karma start",
-    "build": "rollup -c"
+    "test": "npm run build && npm run format && karma start",
+    "build": "rollup -c",
+    "format": "prettier --write 'src/**/*'",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -21,26 +23,25 @@
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
-    "@babel/preset-stage-3": "^7.0.0",
+    "husky": "^1.0.0-rc.13",
     "jasmine-core": "^3.4.0",
     "karma": "^4.1.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^2.0.1",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-rollup-preprocessor": "^7.0.0",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
     "rollup": "^1.16.2",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-node-resolve": "^5.1.0",
     "rollup-plugin-uglify": "^6.0.2",
-    "vue": "^2.6.10",
-    "vue-template-compiler": "^2.6.10",
-    "xo": "^0.12.1"
+    "vue": "^2.6.10"
   },
-  "xo": {
-    "envs": [
-      "browser"
-    ],
-    "space": true
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
