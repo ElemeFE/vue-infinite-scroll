@@ -1,6 +1,6 @@
 const ctx = '@@InfiniteScroll';
 
-var throttle = function (fn, delay) {
+var throttle = function (eventTarget, fn, delay) {
   var now, lastExec, timer, context, args; //eslint-disable-line
 
   var execute = function () {
@@ -8,16 +8,20 @@ var throttle = function (fn, delay) {
     lastExec = now;
   };
 
-  return function () {
+  var resetTimeout = function() {
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+  };
+
+  var listener = function() {
     context = this;
     args = arguments;
 
     now = Date.now();
 
-    if (timer) {
-      clearTimeout(timer);
-      timer = null;
-    }
+    resetTimeout();
 
     if (lastExec) {
       var diff = delay - (now - lastExec);
@@ -31,6 +35,13 @@ var throttle = function (fn, delay) {
     } else {
       execute();
     }
+  };
+
+  eventTarget.addEventListener('scroll', listener);
+
+  return function() {
+    resetTimeout();
+    eventTarget.removeEventListener('scroll', listener);
   };
 };
 
@@ -104,11 +115,10 @@ var doBind = function () {
   directive.throttleDelay = throttleDelay;
 
   directive.scrollEventTarget = getScrollEventTarget(element);
-  directive.scrollListener = throttle(doCheck.bind(directive), directive.throttleDelay);
-  directive.scrollEventTarget.addEventListener('scroll', directive.scrollListener);
+  directive.scrollListenerRemover = throttle(directive.scrollEventTarget, doCheck.bind(directive), directive.throttleDelay);
 
   this.vm.$on('hook:beforeDestroy', function () {
-    directive.scrollEventTarget.removeEventListener('scroll', directive.scrollListener);
+    directive.scrollListenerRemover();
   });
 
   var disabledExpr = element.getAttribute('infinite-scroll-disabled');
@@ -210,7 +220,8 @@ export default {
   },
 
   unbind(el) {
-    if (el && el[ctx] && el[ctx].scrollEventTarget)
-      el[ctx].scrollEventTarget.removeEventListener('scroll', el[ctx].scrollListener);
+    if (el && el[ctx] && el[ctx].scrollListenerRemover) {
+      el[ctx].scrollListenerRemover();
+    }
   }
 };
