@@ -1,12 +1,13 @@
 {
   "name": "vue-infinite-scroll",
-  "version": "2.0.2",
+  "version": "3.0.0-beta",
   "description": "An infinite scroll directive for vue.js.",
   "main": "vue-infinite-scroll.js",
   "jsnext:main": "./src/index.js",
   "scripts": {
-    "test": "npm run build && xo src/**/* && karma start",
+    "test": "npm run build && npm run format && karma start",
     "build": "rollup -c",
+    "format": "prettier --write 'src/**/*'",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -20,25 +21,27 @@
   "author": "long.zhang@ele.me",
   "license": "MIT",
   "devDependencies": {
-    "babel-preset-es2015-rollup": "^3.0.0",
-    "jasmine-core": "^2.4.1",
-    "karma": "^0.13.21",
-    "karma-chrome-launcher": "^0.2.2",
-    "karma-jasmine": "^0.3.7",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "husky": "^1.0.0-rc.13",
+    "jasmine-core": "^3.4.0",
+    "karma": "^4.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^2.0.1",
     "karma-phantomjs-launcher": "^1.0.0",
-    "karma-rollup-preprocessor": "^2.0.1",
-    "phantomjs-prebuilt": "^2.1.5",
-    "rollup": "^0.41.4",
-    "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-uglify": "1.0.1",
-    "rollup-plugin-node-resolve": "^2.0.0",
-    "vue": "^2.0.3",
-    "xo": "^0.12.1"
+    "karma-rollup-preprocessor": "^7.0.0",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
+    "rollup": "^1.16.2",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-resolve": "^5.1.0",
+    "rollup-plugin-uglify": "^6.0.2",
+    "vue": "^2.6.10"
   },
-  "xo": {
-    "envs": [
-      "browser"
-    ],
-    "space": true
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }

@@ -6,7 +6,7 @@ const install = function(Vue) {
 
 if (window.Vue) {
   window.infiniteScroll = InfiniteScroll;
-  Vue.use(install); // eslint-disable-line
+  Vue.use(install);
 }
 
 InfiniteScroll.install = install;
