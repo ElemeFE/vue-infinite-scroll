@@ -14,7 +14,7 @@ You can use any build tool which supports `commonjs`:
 
 ```JavaScript
 // register globally
-var infiniteScroll =  require('vue-infinite-scroll');
+var infiniteScroll = require('vue-infinite-scroll');
 Vue.use(infiniteScroll)
 
 // or for a single instance
