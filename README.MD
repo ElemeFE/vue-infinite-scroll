@@ -1,4 +1,4 @@
-# vue-infinite-scroll
+# vue-infinite-scroll(deprecated)
 
 vue-infinite-scroll is an infinite scroll directive for vue.js.
 
