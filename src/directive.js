@@ -179,7 +179,7 @@ var doCheck = function (force) {
 };
 
 export default {
-  bind(el, binding, vnode) {
+  beforeMount(el, binding, vnode) {
     el[ctx] = {
       el,
       vm: vnode.context,
@@ -209,7 +209,7 @@ export default {
     });
   },
 
-  unbind(el) {
+  unmounted(el) {
     if (el && el[ctx] && el[ctx].scrollEventTarget)
       el[ctx].scrollEventTarget.removeEventListener('scroll', el[ctx].scrollListener);
   }
