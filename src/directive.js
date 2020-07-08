@@ -182,7 +182,7 @@ export default {
   beforeMount(el, binding, vnode) {
     el[ctx] = {
       el,
-      vm: vnode.context,
+      vm: binding.instance,
       expression: binding.value
     };
     const args = arguments;
