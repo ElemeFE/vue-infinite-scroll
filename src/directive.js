@@ -107,15 +107,29 @@ var doBind = function () {
   directive.scrollListener = throttle(doCheck.bind(directive), directive.throttleDelay);
   directive.scrollEventTarget.addEventListener('scroll', directive.scrollListener);
 
+  //Required for mobile touch scrolling
+  directive.scrollEventTarget.addEventListener('touchmove', directive.scrollListener);
+
+  /*
+  * Check if scroll was changed
+  * For cases when mobile user slide touch fast to end of page
+  * and the "touchmove" event not fire in finish of scroll
+  */
+  var scrollCheckInterval = setInterval(() => {
+    directive.scrollListener();
+  }, 1000)
+
   this.vm.$on('hook:beforeDestroy', function () {
     directive.scrollEventTarget.removeEventListener('scroll', directive.scrollListener);
+    directive.scrollEventTarget.removeEventListener('touchmove', directive.scrollListener);
+    clearInterval(scrollCheckInterval);
   });
 
   var disabledExpr = element.getAttribute('infinite-scroll-disabled');
   var disabled = false;
 
   if (disabledExpr) {
-    this.vm.$watch(disabledExpr, function(value) {
+    this.vm.$watch(disabledExpr, function (value) {
       directive.disabled = value;
       if (!value && directive.immediateCheck) {
         doCheck.call(directive);
@@ -148,7 +162,7 @@ var doBind = function () {
 
   var eventName = element.getAttribute('infinite-scroll-listen-for-event');
   if (eventName) {
-    directive.vm.$on(eventName, function() {
+    directive.vm.$on(eventName, function () {
       doCheck.call(directive);
     });
   }
