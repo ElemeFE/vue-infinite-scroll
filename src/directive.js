@@ -105,10 +105,10 @@ var doBind = function () {
 
   directive.scrollEventTarget = getScrollEventTarget(element);
   directive.scrollListener = throttle(doCheck.bind(directive), directive.throttleDelay);
-  directive.scrollEventTarget.addEventListener('scroll', directive.scrollListener);
+  directive.scrollEventTarget.addEventListener('scroll', directive.scrollListener, { passive: true });
 
   this.vm.$on('hook:beforeDestroy', function () {
-    directive.scrollEventTarget.removeEventListener('scroll', directive.scrollListener);
+    directive.scrollEventTarget.removeEventListener('scroll', directive.scrollListener, { passive: true });
   });
 
   var disabledExpr = element.getAttribute('infinite-scroll-disabled');
