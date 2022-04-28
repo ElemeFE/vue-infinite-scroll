@@ -5,13 +5,13 @@
   "main": "vue-infinite-scroll.js",
   "jsnext:main": "./src/index.js",
   "scripts": {
-    "test": "npm run build && xo src/**/* && karma start",
+    "test": "eslint src --fix && npm run build && karma start",
     "build": "rollup -c",
     "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ElemeFE/vue-infinite-scroll.git"
+    "url": "https://github.com/landtechnologies/vue-infinite-scroll.git"
   },
   "keywords": [
     "infinite-scroll",
@@ -21,6 +21,9 @@
   "license": "MIT",
   "devDependencies": {
     "babel-preset-es2015-rollup": "^3.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.7.1",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.21",
     "karma-chrome-launcher": "^0.2.2",
@@ -28,11 +31,13 @@
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-rollup-preprocessor": "^2.0.1",
     "phantomjs-prebuilt": "^2.1.5",
+    "prettier": "^2.6.2",
     "rollup": "^0.41.4",
     "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-uglify": "1.0.1",
     "rollup-plugin-node-resolve": "^2.0.0",
-    "vue": "^2.0.3",
+    "rollup-plugin-uglify": "1.0.1",
+    "vue": "^2.6.14",
+    "vue-eslint-parser": "^8.3.0",
     "xo": "^0.12.1"
   },
   "xo": {
@@ -40,5 +45,15 @@
       "browser"
     ],
     "space": true
+  },
+  "files": [
+    "vue-infinite-scroll.js",
+    "src/",
+    "test",
+    "package-lock.json"
+  ],
+  "dependencies": {
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "eslint": "^8.14.0"
   }
 }
