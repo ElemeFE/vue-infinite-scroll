@@ -1,6 +1,6 @@
 {
   "name": "vue-infinite-scroll",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "An infinite scroll directive for vue.js.",
   "main": "vue-infinite-scroll.js",
   "jsnext:main": "./src/index.js",
