@@ -20,22 +20,24 @@
   "author": "long.zhang@ele.me",
   "license": "MIT",
   "devDependencies": {
+    "@rollup/plugin-babel": "^5.3.1",
+    "@rollup/plugin-node-resolve": "^13.2.1",
     "babel-preset-es2015-rollup": "^3.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.7.1",
     "jasmine-core": "^2.4.1",
-    "karma": "^0.13.21",
-    "karma-chrome-launcher": "^0.2.2",
-    "karma-jasmine": "^0.3.7",
-    "karma-phantomjs-launcher": "^1.0.0",
-    "karma-rollup-preprocessor": "^2.0.1",
-    "phantomjs-prebuilt": "^2.1.5",
+    "jest-environment-jsdom": "^28.0.2",
+    "karma": "^6.3.19",
+    "karma-chrome-launcher": "^3.1.1",
+    "karma-jasmine": "^5.0.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-rollup-preprocessor": "^7.0.8",
+    "phantomjs-prebuilt": "^2.1.16",
     "prettier": "^2.6.2",
-    "rollup": "^0.41.4",
-    "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-node-resolve": "^2.0.0",
-    "rollup-plugin-uglify": "1.0.1",
+    "rollup": "^2.70.2",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-uglify": "^6.0.4",
     "vue": "^2.6.14",
     "vue-eslint-parser": "^8.3.0",
     "xo": "^0.12.1"
@@ -53,7 +55,11 @@
     "package-lock.json"
   ],
   "dependencies": {
+    "@babel/preset-env": "^7.16.11",
     "@rollup/plugin-commonjs": "^22.0.0",
-    "eslint": "^8.14.0"
+    "cypress": "^9.6.0",
+    "eslint": "^8.14.0",
+    "jest": "^28.0.2",
+    "rollup-jest": "^1.1.3"
   }
 }

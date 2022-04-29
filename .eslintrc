@@ -1,0 +1,54 @@
+{
+  "rules": {
+    "ban-ts-comment": 0,
+    "quotes": 0,
+    "camelcase": 0,
+    "no-underscore-dangle": 0,
+    "no-shadow": 2,
+    "no-unused-vars": 1,
+    "no-var": 1,
+    "no-console": 0,
+    "no-prototype-builtins": 0,
+    "no-mixed-requires": 0,
+    "eqeqeq": 0,
+    "indent": [0, 2],
+    "linebreak-style": [2, "unix"],
+    "semi": [2, "always"],
+    "vue/no-side-effects-in-computed-properties": 2,
+    "vue/no-mutating-props": 2,
+    "vue/no-async-in-computed-properties": 2,
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "any",
+        "ignoreReadBeforeAssign": false
+      }
+    ]
+  },
+  "globals": {
+    "google": false,
+    "document": false,
+    "window": false,
+    "$": false
+  },
+  "parserOptions": {
+    "requireConfigFile": false,
+    "caller": {
+      "supportsTopLevelAwait": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "jasmine": true,
+    "browser": true
+  },
+  "parser": "vue-eslint-parser",
+  "plugins": ["vue"],
+  "extends": [
+    "plugin:vue/essential",
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "ignorePatterns": ["node_modules", ".github"]
+}

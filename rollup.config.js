@@ -1,14 +1,15 @@
-import babel from 'rollup-plugin-babel';
+import { getBabelOutputPlugin } from "@rollup/plugin-babel";
 
 export default {
-  entry: './src/index.js',
-  dest: 'vue-infinite-scroll.js',
-  plugins: [
-    babel({
-      exclude: 'node_modules/**',
-      presets: ['es2015-rollup']
-    })
-  ],
-  format: 'umd',
-  moduleName: 'infiniteScroll'
+  input: "./src/index.js",
+  output: {
+    file: "vue-infinite-scroll.js",
+    format: "esm",
+    name: "infiniteScroll",
+    plugins: [
+      getBabelOutputPlugin({
+        presets: [["@babel/preset-env", { modules: "umd" }]],
+      }),
+    ],
+  },
 };
