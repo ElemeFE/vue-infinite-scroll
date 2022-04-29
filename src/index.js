@@ -1,7 +1,8 @@
-import InfiniteScroll from './directive';
+import InfiniteScroll from "./directive";
 
-const install = function(Vue) {
-  Vue.directive('InfiniteScroll', InfiniteScroll);
+const install = function (Vue) {
+  Vue.directive("InfiniteScroll", InfiniteScroll);
+  InfiniteScroll.installed = true;
 };
 
 if (window.Vue) {
